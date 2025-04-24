@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hepi Besdey Najmul!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffeb3b, #ff4081);
+      color: #333;
+      text-align: center;
+      padding: 2rem;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .ucapan {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .btn-kejutan {
+      background: #ff4081;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn-kejutan:hover {
+      background: #e91e63;
+    }
+    .slideshow {
+      display: none;
+      margin-top: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .slideshow img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      animation: fadein 1s ease-in;
+    }
+    @keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .btn-kejutan {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+      }
+      .ucapan {
+        padding: 1rem;
+      }
+    }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .balloon {
+      position: fixed;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      background: red;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: floatUp 6s ease-in-out forwards;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Hepi Besdey Najmul Rijal!</h1>  <div class="ucapan">
+    <p><strong>Si paling rame, si paling aktif, si paling “ayo gaskeun”!</strong></p>
+    <p>Semoga di umur baru ini, energimu makin tak terbendung (kayak chat grup pas kamu muncul),</p>
+    <p>Ide-idemu makin out of the box (tapi jangan out of time juga ya),</p>
+    <p>Dan semoga tetap lucu, ceria, dan bikin semua orang betah nongkrong sama kamu!</p>
+    <p>Jangan lupa: hidup bukan cuma soal rapat dan agenda, tapi juga makan cilok sambil ketawa bareng temen!</p>
+    <p><strong>Have fun, stay awesome, and keep being the chaos we all love!</strong></p>
+  </div><button class="btn-kejutan" onclick="showSurprise()">Klik untuk Kejutan!</button>
+
+  <div class="slideshow" id="slideshow">
+    <img src="foto1.jpg" alt="Najmul 1">
+    <img src="foto2.jpg" alt="Najmul 2">
+    <img src="foto3.jpg" alt="Najmul 3">
+    <img src="foto3.jpg" alt="Najmul 3">
+    <img src="foto3.jpg" alt="Najmul 3">
+    <img src="foto3.jpg" alt="Najmul 3">
+  </div><canvas class="confetti" id="confetti"></canvas>
+
+<audio id="backsound" src="hbd.mp3"></audio> <audio id="efek" src="suprise.wav"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>  <script>
+    function showSurprise() {
+      const slideshow = document.getElementById('slideshow');
+      slideshow.style.display = 'block';
+      document.getElementById('backsound').play();
+      document.getElementById('efek').play();
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+      });
+      spawnBalloons(10);
+      smoothScrollTo(slideshow.offsetTop, 1500);
+    }
+
+    function spawnBalloons(count) {
+      const faces = ['😊', '🥳', '😎', '🎉', '😁', '😜'];
+      for (let i = 0; i < count; i++) {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.background = randomColor();
+        balloon.textContent = faces[Math.floor(Math.random() * faces.length)];
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 6000);
+      }
+    }
+
+    function randomColor() {
+      const colors = ['#ff4081', '#ffeb3b', '#4caf50', '#03a9f4', '#e91e63', '#9c27b0'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function smoothScrollTo(target, duration) {
+      const start = window.pageYOffset;
+      const distance = target - start;
+      let startTime = null;
+
+      function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = ease(timeElapsed, start, distance, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      }
+
+      function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      }
+
+      requestAnimationFrame(animation);
+    }
+  </script></body>
+</html>
